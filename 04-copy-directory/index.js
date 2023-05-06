@@ -20,10 +20,10 @@ async function copyDir(from, tu) {
     const files = await readdir(from, { withFileTypes: true });
     for (const file of files) {
       if (file.isDirectory()) {
-        copyDir(`${from}/${file.name}`, `${tu}/${file.name}`);
+        copyDir(path.join(from, file.name), path.join(tu, file.name));
         continue;
       }
-      await copyFile(`${from}/${file.name}`, `${tu}/${file.name}`);
+      await copyFile(path.join(from, file.name), path.join(tu, file.name));
     }
   } catch (error) {
     console.error(error);
