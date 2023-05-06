@@ -4,14 +4,18 @@ const dir = path.join(__dirname, 'files');
 const cpDir = path.join(__dirname, 'files-copy');
 
 (async function rmDir(removeDir) {
-  const files = await readdir(__dirname, { withFileTypes: true });
-  for (const file of files) {
-    if (file.name === 'files-copy' && file.isDirectory()) {
-      await rm(removeDir, { recursive: true, force: true });
-      break;
+  try {
+    const files = await readdir(__dirname, { withFileTypes: true });
+    for (const file of files) {
+      if (file.name === 'files-copy' && file.isDirectory()) {
+        await rm(removeDir, { recursive: true, force: true });
+        break;
+      }
     }
+    copyDir(dir, cpDir);    
+  } catch (error) {
+    console.error(error);
   }
-  copyDir(dir, cpDir);
 })(cpDir);
 
 async function copyDir(from, tu) {
